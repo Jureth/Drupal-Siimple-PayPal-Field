@@ -23,7 +23,7 @@
   },
   "require": {
     "php": ">=7.1",
-    "ext-json": "*"
+    "ext-json": "*",
     "drupal/core": "^8",
   },
   "require-dev": {
