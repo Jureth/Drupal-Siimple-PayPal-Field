@@ -1,0 +1,28 @@
+field.field_settings.simple_paypal_field:
+  type: mapping
+  label: 'Paid settings'
+  mapping:
+    amount:
+      type: float
+      label: 'Amount'
+field.value.simple_paypal_field:
+  type: mapping
+  mapping:
+    value:
+      type: integer
+      label: 'Value'
+field.formatter.settings.paypal_smart_buttons:
+  type: mapping
+  label: 'PayPal Smart Buttons formatter settings'
+  mapping:
+    button_settings:
+      type: sequence
+      label: 'PayPal button settings'
+      nullable: true
+      sequence:
+        type: string
+        label: 'Setting'
+
+field.widget.paypal_smart_buttons:
+  type: mapping
+  label: 'Simple PayPal field widget settings'

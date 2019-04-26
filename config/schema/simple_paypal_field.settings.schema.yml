@@ -1,0 +1,17 @@
+simple_paypal_field.settings:
+  type: config_object
+  label: 'Module Settings'
+  mapping:
+    paypal:
+      type: mapping
+      label: 'PayPal settings'
+      mapping:
+        mode:
+          type: string
+          label: 'Mode'
+        client_id:
+          type: string
+          label: 'Client Id'
+        secret_id:
+          type: string
+          label: 'Secret Id'

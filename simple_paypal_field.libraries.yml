@@ -1,0 +1,8 @@
+paypal_smart_buttons:
+  version: 1.x
+  js:
+    js/paypal.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - simple_paypal_field/paypal_sdk

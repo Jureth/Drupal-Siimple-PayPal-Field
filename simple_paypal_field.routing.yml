@@ -1,0 +1,14 @@
+simple_paypal_field.on_approve_order:
+  path: '/simple_paypal_field/approve'
+  defaults:
+    _controller: '\Drupal\simple_paypal_field\Controller\PayPalSmartButtonsController::approve'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'
+simple_paypal_field.admin.settings_form:
+  path: '/admin/config/simple_paypal_field'
+  defaults:
+    _form: '\Drupal\simple_paypal_field\Form\PayPalSettingsForm'
+  requirements:
+    _permission: 'simple_paypal_field.administer'

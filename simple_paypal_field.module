@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * @file
+ * Module hooks and functions.
+ */
+
+use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_library_info_build().
+ */
+function simple_paypal_field_library_info_build() {
+  $client_id = Drupal::config('simple_paypal_field.settings')
+    ->get('paypal.client_id') ?: 'sb';
+  $libraries['paypal_sdk'] = [
+    'js' => [
+      "https://www.paypal.com/sdk/js?client-id=$client_id" => [
+        'type' => 'external',
+        'preprocess' => FALSE,
+        'minified' => FALSE,
+      ],
+    ],
+  ];
+  return $libraries;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function simple_paypal_field_theme($existing, $type, $theme, $path) {
+  return [
+    'paypal_smart_buttons' => [
+      'variables' => [
+        'settings' => [],
+        'amount' => '0.01',
+        'attributes' => [],
+      ],
+    ],
+    'paypal_smart_buttons_formatter' => [
+      'variables' => [
+        'item' => NULL,
+        'settings' => [],
+      ],
+    ],
+
+    'paypal_smart_buttons_formatter_disabled' => [
+      'variables' => [
+        'item' => NULL,
+        'settings' => [],
+      ],
+    ],
+  ];
+}
+
+function template_preprocess_paypal_smart_buttons(&$variables) {
+  $variables['attributes'] = new Attribute($variables['attributes']);
+  $variables['attributes']['data-settings'] = json_encode(
+    array_filter(
+      $variables['settings']
+    )
+  );
+  $variables['attributes']['data-value'] = $variables['amount'];
+}
+
+function template_preprocess_paypal_smart_buttons_formatter(&$variables) {
+  /** @var \Drupal\simple_paypal_field\Plugin\Field\FieldType\SimplePayPalField $item */
+  $item = $variables['item'];
+  $entity_type = $item->getFieldDefinition()->getTargetEntityTypeId();
+  $bundle = $item->getFieldDefinition()->getTargetBundle();
+  $field = $item->getFieldDefinition()->getName();
+  $entity_id = $item->getEntity()->id();
+  $id = implode(
+    '_',
+    [$entity_type, $bundle, $field, $entity_id, 1]
+  );
+  $attributes = [
+    'data-entity-type' => $entity_type,
+    'data-bundle' => $bundle,
+    'data-field' => $field,
+    'data-entity-id' => $entity_id,
+    'data-field-value' => 1,
+    'id' => $id,
+  ];
+  $variables['buttons'] = [
+    '#theme' => 'paypal_smart_buttons',
+    '#attributes' => $attributes,
+    '#amount' => $item->getDataDefinition()->getSetting('amount'),
+    '#settings' => $variables['settings']['button_settings'],
+  ];
+}
+
+function template_preprocess_paypal_smart_buttons_formatter_disabled(&$variables) {
+  kpr($variables);
+}

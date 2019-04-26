@@ -1,0 +1,4 @@
+simple_paypal_field.administer:
+  title: Edit settings
+  restrict access: true
+  description: Edit settings

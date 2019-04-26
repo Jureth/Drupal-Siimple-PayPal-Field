@@ -1,0 +1,9 @@
+name: Simple Paypal Field
+description: Adds to Drupal a field with PayPal Smart Buttons
+type: module
+package: 'Field Types'
+core: 8.x
+configure: simple_paypal_field.admin.settings_form
+dependencies:
+  - drupal:field
+php: 7.1

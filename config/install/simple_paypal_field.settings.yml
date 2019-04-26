@@ -1,0 +1,4 @@
+paypal:
+  mode: 'https://api.sandbox.paypal.com'
+  client_id: ''
+  secret_id: ''

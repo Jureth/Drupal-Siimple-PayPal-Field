@@ -1,0 +1,31 @@
+{
+  "name": "drupal/simple_paypal_field",
+  "description": "Allows you to use payment method to process payments for nodes by adding field type to node or entity",
+  "type": "drupal-module",
+  "license": "GPL-2.0+",
+  "keywords": ["php", "Drupal", "payments"],
+  "minimum-stability": "dev",
+  "homepage": "https://www.drupal.org/project/simple_paypal_field",
+  "authors": [
+    {
+      "name": "Yuri Minin (Jureth)",
+      "role": "Maintainer",
+      "email": "J.Jureth@gmail.com"
+    },
+    {
+      "name": "Burning Buttons",
+      "homepage": "https://burningbuttons.com"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/simple_paypal_field",
+    "source": "http://cgit.drupalcode.org/simple_paypal_field"
+  },
+  "require": {
+    "php": ">=7.1",
+    "ext-json": "*"
+    "drupal/core": "^8",
+  },
+  "require-dev": {
+  }
+}
