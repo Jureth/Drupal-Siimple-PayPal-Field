@@ -28,7 +28,7 @@ class PayPalSmartButtonsWidget extends WidgetBase {
       '#type' => 'checkbox',
       '#default_value' => !empty($items[0]->value),
       '#title_display' => 'after',
-      '#title' => $this->fieldDefinition->getLabel(),
+      '#title' => $this->t('Show as paid'),
     ]);
     return $element;
   }

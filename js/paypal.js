@@ -15,13 +15,17 @@
           },
           onApprove: function (data, actions) {
             actions.order.capture().then(function (details) {
-              //window.location.reload();
               fetch('/simple_paypal_field/approve', {
                 method: 'post',
                 headers: new Headers({
                   'Content-type': 'application/json'
                 }),
-                body: JSON.stringify({details: details})
+                body: JSON.stringify({
+                  details: details,
+                  element: element.getAttribute('id'),
+                })
+              }).then(function() {
+                window.location.reload();
               })
             });
 

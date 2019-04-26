@@ -27,6 +27,20 @@ class PayPalSmartButtonsController extends ControllerBase {
     $content = $request->getContent();
     if (!empty($content)) {
       $data = json_decode($content, TRUE);
+      try {
+        [
+          $element['entity_type'],
+          $element['bundle'],
+          $element['field'],
+          $element['entity_id'],
+          $field_id,
+        ] = explode('-', $data['element']);
+        $data['element'] = $element;
+      }catch(\Throwable $e) {
+        unset($data['element']);
+      }
+      $this->getLogger('simple_paypal_field')->debug(var_export($data, TRUE));
+
       $event = new PaypalSmartButtonsEvent($data);
       $this->eventDispatcher->dispatch(
         PayPalSmartButtonsEvents::APPROVE_ORDER,
@@ -37,7 +51,6 @@ class PayPalSmartButtonsController extends ControllerBase {
     else {
       return new JsonResponse(NULL, Response::HTTP_NOT_ACCEPTABLE);
     }
-
   }
 
 }

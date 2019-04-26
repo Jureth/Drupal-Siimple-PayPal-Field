@@ -71,7 +71,7 @@ function template_preprocess_paypal_smart_buttons_formatter(&$variables) {
   $field = $item->getFieldDefinition()->getName();
   $entity_id = $item->getEntity()->id();
   $id = implode(
-    '_',
+    '-',
     [$entity_type, $bundle, $field, $entity_id, 1]
   );
   $attributes = [
