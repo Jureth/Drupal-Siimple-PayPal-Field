@@ -5,33 +5,28 @@ namespace Drupal\simple_paypal_field\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
+/**
+ * PayPal settings form.
+ */
 class PayPalSettingsForm extends ConfigFormBase {
 
   /**
-   * Gets the configuration names that will be editable.
-   *
-   * @return array
-   *   An array of configuration object names that are editable if called in
-   *   conjunction with the trait's config() method.
+   * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
     return ['simple_paypal_field.settings'];
   }
 
   /**
-   * Returns a unique string identifying the form.
-   *
-   * The returned ID should be a unique string that can be a valid PHP function
-   * name, since it's used in hook implementation names such as
-   * hook_form_FORM_ID_alter().
-   *
-   * @return string
-   *   The unique string identifying the form.
+   * {@inheritdoc}
    */
   public function getFormId() {
     return 'simple_paypal_field_settings_form';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('simple_paypal_field.settings');
     $form['mode'] = [
@@ -67,6 +62,9 @@ class PayPalSettingsForm extends ConfigFormBase {
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('simple_paypal_field.settings')
       ->set('mode', $form_state->getValue('mode'))
@@ -74,4 +72,5 @@ class PayPalSettingsForm extends ConfigFormBase {
       ->set('secret_id', $form_state->getValue('secret_id'))
       ->save();
   }
+
 }

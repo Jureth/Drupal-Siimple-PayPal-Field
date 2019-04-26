@@ -116,7 +116,7 @@ class PayPalSmartButtonsFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
 
-    foreach ($items as $key => $item) {
+    foreach ($items as $item) {
       if ($item->value) {
         // Payment processed, so not showing the buttons.
         $elements[] = [

@@ -53,6 +53,9 @@ function simple_paypal_field_theme($existing, $type, $theme, $path) {
   ];
 }
 
+/**
+ * Implements template_preprocess_HOOK().
+ */
 function template_preprocess_paypal_smart_buttons(&$variables) {
   $variables['attributes'] = new Attribute($variables['attributes']);
   $variables['attributes']['data-settings'] = json_encode(
@@ -63,6 +66,9 @@ function template_preprocess_paypal_smart_buttons(&$variables) {
   $variables['attributes']['data-value'] = $variables['amount'];
 }
 
+/**
+ * Implements template_preprocess_HOOK().
+ */
 function template_preprocess_paypal_smart_buttons_formatter(&$variables) {
   /** @var \Drupal\simple_paypal_field\Plugin\Field\FieldType\SimplePayPalField $item */
   $item = $variables['item'];
@@ -90,6 +96,8 @@ function template_preprocess_paypal_smart_buttons_formatter(&$variables) {
   ];
 }
 
+/**
+ * Implements template_preprocess_HOOK().
+ */
 function template_preprocess_paypal_smart_buttons_formatter_disabled(&$variables) {
-  kpr($variables);
 }

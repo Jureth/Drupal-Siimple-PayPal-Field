@@ -3,6 +3,7 @@ simple_paypal_field.on_approve_order:
   defaults:
     _controller: '\Drupal\simple_paypal_field\Controller\PayPalSmartButtonsController::approve'
   requirements:
+    # Should be executed on every payment made, so no checks at this moment.
     _access: 'TRUE'
   options:
     no_cache: 'TRUE'

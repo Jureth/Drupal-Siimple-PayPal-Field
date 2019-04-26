@@ -2,7 +2,6 @@
 
 namespace Drupal\simple_paypal_field\Plugin\Field\FieldType;
 
-use Drupal;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
