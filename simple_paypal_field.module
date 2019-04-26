@@ -11,8 +11,10 @@ use Drupal\Core\Template\Attribute;
  * Implements hook_library_info_build().
  */
 function simple_paypal_field_library_info_build() {
-  $client_id = Drupal::config('simple_paypal_field.settings')
-    ->get('paypal.client_id') ?: 'sb';
+  $config = Drupal::config('simple_paypal_field.settings');
+  $client_id = $config->get('paypal.mode') === 'live'
+    ? ($config->get('paypal.client_id') ?: 'sb')
+    : 'sb';
   $libraries['paypal_sdk'] = [
     'js' => [
       "https://www.paypal.com/sdk/js?client-id=$client_id" => [

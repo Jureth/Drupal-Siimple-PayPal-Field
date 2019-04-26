@@ -59,6 +59,7 @@ class PayPalSettingsForm extends ConfigFormBase {
         'Secret ID from sandbox/live API credentials of your PayPal application'
       ),
     ];
+    $form = parent::buildForm($form, $form_state);
     return $form;
   }
 
@@ -67,9 +68,9 @@ class PayPalSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('simple_paypal_field.settings')
-      ->set('mode', $form_state->getValue('mode'))
-      ->set('client_id', $form_state->getValue('client_id'))
-      ->set('secret_id', $form_state->getValue('secret_id'))
+      ->set('paypal.mode', $form_state->getValue('mode'))
+      ->set('paypal.client_id', $form_state->getValue('client_id'))
+      ->set('paypal.secret_id', $form_state->getValue('secret_id'))
       ->save();
   }
 
