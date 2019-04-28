@@ -116,25 +116,26 @@ class PayPalSmartButtonsFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
 
-    foreach ($items as $item) {
+    foreach ($items as $key => $item) {
       if ($item->value) {
-        // Payment processed, so not showing the buttons.
-        $elements[] = [
-          '#theme' => 'paypal_smart_buttons_formatter_disabled',
-          '#item' => $item,
-        ];
-      }
-      else {
         $elements[] = [
           '#theme' => 'paypal_smart_buttons_formatter',
           '#amount' => $items->getSetting('amount'),
-          '#item' => $item,
+          '#field' => $item,
+          '#field_key' => $key,
           '#settings' => $this->getSettings(),
           '#attached' => [
             'library' => [
               'simple_paypal_field/paypal_smart_buttons',
             ],
           ],
+        ];
+      }
+      else {
+        // Payment processed, so not showing the buttons.
+        $elements[] = [
+          '#theme' => 'paypal_smart_buttons_formatter_disabled',
+          '#item' => $item,
         ];
       }
     }

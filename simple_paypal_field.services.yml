@@ -1,0 +1,5 @@
+services:
+  simple_paypal_field.simple_pay_pal_field_event_subscripber:
+    class: Drupal\simple_paypal_field\EventSubscriber\SimplePayPalFieldEventSubscripber
+    tags:
+      - { name: event_subscriber }

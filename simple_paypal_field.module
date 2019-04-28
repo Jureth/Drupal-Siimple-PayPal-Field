@@ -41,7 +41,8 @@ function simple_paypal_field_theme($existing, $type, $theme, $path) {
     ],
     'paypal_smart_buttons_formatter' => [
       'variables' => [
-        'item' => NULL,
+        'field' => NULL,
+        'field_key' => 0,
         'settings' => [],
       ],
     ],
@@ -72,28 +73,24 @@ function template_preprocess_paypal_smart_buttons(&$variables) {
  * Implements template_preprocess_HOOK().
  */
 function template_preprocess_paypal_smart_buttons_formatter(&$variables) {
-  /** @var \Drupal\simple_paypal_field\Plugin\Field\FieldType\SimplePayPalField $item */
-  $item = $variables['item'];
-  $entity_type = $item->getFieldDefinition()->getTargetEntityTypeId();
-  $bundle = $item->getFieldDefinition()->getTargetBundle();
-  $field = $item->getFieldDefinition()->getName();
-  $entity_id = $item->getEntity()->id();
+  /** @var \Drupal\simple_paypal_field\Plugin\Field\FieldType\SimplePayPalField $field */
+  $field = $variables['field'];
+  $definition = $field->getFieldDefinition();
   $id = implode(
     '-',
-    [$entity_type, $bundle, $field, $entity_id, 1]
+    [
+      $definition->getTargetEntityTypeId(),
+      $definition->getTargetBundle(),
+      $definition->getName(),
+      $field->getEntity()->id(),
+      $variables['field_key']
+    ]
   );
-  $attributes = [
-    'data-entity-type' => $entity_type,
-    'data-bundle' => $bundle,
-    'data-field' => $field,
-    'data-entity-id' => $entity_id,
-    'data-field-value' => 1,
-    'id' => $id,
-  ];
+  $attributes = ['id' => $id];
   $variables['buttons'] = [
     '#theme' => 'paypal_smart_buttons',
     '#attributes' => $attributes,
-    '#amount' => $item->getDataDefinition()->getSetting('amount'),
+    '#amount' => $field->getDataDefinition()->getSetting('amount'),
     '#settings' => $variables['settings']['button_settings'],
   ];
 }
@@ -102,4 +99,11 @@ function template_preprocess_paypal_smart_buttons_formatter(&$variables) {
  * Implements template_preprocess_HOOK().
  */
 function template_preprocess_paypal_smart_buttons_formatter_disabled(&$variables) {
+}
+
+/**
+ * Implements hook_field_widget_info_alter().
+ */
+function simple_paypal_field_field_widget_info_alter(array &$info) {
+  $info['boolean_checkbox']['field_types'][] = 'simple_paypal_field';
 }

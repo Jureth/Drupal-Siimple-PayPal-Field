@@ -26,3 +26,20 @@ field.formatter.settings.paypal_smart_buttons:
 field.widget.paypal_smart_buttons:
   type: mapping
   label: 'Simple PayPal field widget settings'
+  mapping:
+    layout:
+      type: string
+      label: 'Buttons layouts'
+    color:
+      type: string
+      label: 'Buttons color'
+    shape:
+      type: string
+      label: 'Buttons shape'
+    label:
+      type: string
+      label: 'Type of label'
+    tagline:
+      type: boolean
+      label: 'Show tagline'
+

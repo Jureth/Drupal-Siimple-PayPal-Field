@@ -10,20 +10,21 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\TypedData\OptionsProviderInterface;
+use Drupal\simple_paypal_field\PayPalFieldInterface;
 
 /**
  * Defines the 'paid_boolean' entity field type.
  *
  * @FieldType(
  *   id = "simple_paypal_field",
- *   label = @Translation("Simple PayPal field"),
- *   description = @Translation("A base field for PayPal buttons with storing payment status"),
+ *   label = @Translation("One-time payment field"),
+ *   description = @Translation("A field which disables itself after payment was made"),
  *   default_widget = "paypal_smart_buttons",
  *   default_formatter = "paypal_smart_buttons",
  *   cardinality = 1
  * )
  */
-class SimplePayPalField extends FieldItemBase implements OptionsProviderInterface {
+class SimplePayPalField extends FieldItemBase implements OptionsProviderInterface, PayPalFieldInterface {
 
   /**
    * {@inheritdoc}
@@ -111,8 +112,8 @@ class SimplePayPalField extends FieldItemBase implements OptionsProviderInterfac
    */
   public function getPossibleOptions(AccountInterface $account = NULL) {
     return [
-      0 => $this->t('Not paid'),
-      1 => $this->t('Paid'),
+      0 => $this->t('Off'),
+      1 => $this->t('On'),
     ];
   }
 
@@ -136,6 +137,15 @@ class SimplePayPalField extends FieldItemBase implements OptionsProviderInterfac
   public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
     $values['value'] = mt_rand(0, 1);
     return $values;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPaymentInfo($info) {
+    // Simply set to 'paid'
+    // @todo check order status.
+    $this->setValue(0);
   }
 
 }
