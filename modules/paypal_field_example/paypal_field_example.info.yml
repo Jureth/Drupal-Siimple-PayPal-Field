@@ -1,0 +1,9 @@
+name: PayPal Field Example
+type: module
+description: An example of using simple paypal field.
+package: Example modules
+core: 8.x
+dependencies:
+  - simple_paypal_field
+  - node
+  - user

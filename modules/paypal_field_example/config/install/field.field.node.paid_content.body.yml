@@ -1,0 +1,22 @@
+uuid: 64212677-a57f-414a-8fb8-d37298990ffb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.paid_content
+  module:
+    - text
+id: node.paid_content.body
+field_name: body
+entity_type: node
+bundle: paid_content
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

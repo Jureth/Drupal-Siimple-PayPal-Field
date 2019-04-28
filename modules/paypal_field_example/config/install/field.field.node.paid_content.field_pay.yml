@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pay
+    - node.type.paid_content
+  module:
+    - simple_paypal_field
+id: node.paid_content.field_pay
+field_name: field_pay
+entity_type: node
+bundle: paid_content
+label: Pay
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  amount: 0.01
+field_type: simple_paypal_field

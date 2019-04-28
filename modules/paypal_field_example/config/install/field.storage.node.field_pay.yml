@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - simple_paypal_field
+id: node.field_pay
+field_name: field_pay
+entity_type: node
+type: simple_paypal_field
+settings: {  }
+module: simple_paypal_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
