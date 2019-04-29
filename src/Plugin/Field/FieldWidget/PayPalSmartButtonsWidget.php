@@ -2,9 +2,13 @@
 
 namespace Drupal\simple_paypal_field\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountProxyInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'boolean_checkbox' widget.
@@ -18,43 +22,53 @@ use Drupal\Core\Form\FormStateInterface;
  *   multiple_values = FALSE
  * )
  */
-class PayPalSmartButtonsWidget extends WidgetBase {
+class PayPalSmartButtonsWidget extends WidgetBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * Current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
 
   /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $item = $items[$delta];
+    $element['value'] = $element;
     if ($item->value) {
-      $element['value'] = $element + [
-          '#theme' => 'paypal_smart_buttons_formatter',
-          '#amount' => $items->getSetting('amount'),
-          '#field' => $item,
-          '#field_key' => $delta,
-          '#settings' => ['button_settings' => $this->getSettings()],
-          '#attached' => [
-            'library' => [
-              'simple_paypal_field/paypal_smart_buttons',
-            ],
+      $element['value'] += [
+        '#theme' => 'paypal_smart_buttons_formatter',
+        '#amount' => $items->getSetting('amount'),
+        '#field' => $item,
+        '#field_key' => $delta,
+        '#settings' => ['button_settings' => $this->getSettings()],
+        '#attached' => [
+          'library' => [
+            'simple_paypal_field/paypal_smart_buttons',
           ],
-        ];
+        ],
+      ];
     }
     else {
-      // @todo permissions check here
-      if (\Drupal::currentUser()->hasPermission('simple_paypal_field.administer')) {
-        $element['value'] = $element + [
-            '#type' => 'checkbox',
-            '#default_value' => !empty($items[0]->value),
-            '#title_display' => 'after',
-            '#title' => $this->t('Enable'),
-          ];
+      // @todo permissions check here.
+      if ($this->currentUser->hasPermission(
+        'simple_paypal_field.administer'
+      )) {
+        $element['value'] += [
+          '#type' => 'checkbox',
+          '#default_value' => !empty($items[0]->value),
+          '#title_display' => 'after',
+          '#title' => $this->t('Enable'),
+        ];
       }
       else {
         // Payment processed, so not showing the buttons.
-        $element['value'] = $element + [
-            '#theme' => 'paypal_smart_buttons_formatter_disabled',
-            '#item' => $item,
-          ];
+        $element['value'] += [
+          '#theme' => 'paypal_smart_buttons_formatter_disabled',
+          '#item' => $item,
+        ];
       }
     }
     return $element;
@@ -149,6 +163,46 @@ class PayPalSmartButtonsWidget extends WidgetBase {
 
     return $settings;
 
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, AccountProxyInterface $user) {
+    parent::__construct(
+      $plugin_id,
+      $plugin_definition,
+      $field_definition,
+      $settings,
+      $third_party_settings
+    );
+    $this->currentUser = $user;
+  }
+
+  /**
+   * Creates an instance of the plugin.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The container to pull out services used in the plugin.
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin ID for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   *
+   * @return static
+   *   Returns an instance of this plugin.
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('current_user')
+    );
   }
 
 }

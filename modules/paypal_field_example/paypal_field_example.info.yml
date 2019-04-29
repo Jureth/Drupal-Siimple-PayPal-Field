@@ -4,6 +4,6 @@ description: An example of using simple paypal field.
 package: Example modules
 core: 8.x
 dependencies:
-  - simple_paypal_field
-  - node
-  - user
+  - simple_paypal_field:simple_paypal_field
+  - drupal:node
+  - drupal:suser

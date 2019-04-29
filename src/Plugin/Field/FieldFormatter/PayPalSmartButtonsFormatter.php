@@ -14,6 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   label = @Translation("PayPal Smart Buttons"),
  *   field_types = {
  *     "simple_paypal_field",
+ *     "auto_off_paypal_field",
  *   }
  * )
  */

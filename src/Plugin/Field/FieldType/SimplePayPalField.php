@@ -17,9 +17,9 @@ use Drupal\simple_paypal_field\PayPalFieldInterface;
  *
  * @FieldType(
  *   id = "simple_paypal_field",
- *   label = @Translation("One-time payment field"),
- *   description = @Translation("A field which disables itself after payment was made"),
- *   default_widget = "paypal_smart_buttons",
+ *   label = @Translation("A simple payment field"),
+ *   description = @Translation("A field fith PayPal smart checkout buttons."),
+ *   default_widget = "boolean_checkbox",
  *   default_formatter = "paypal_smart_buttons",
  *   cardinality = 1
  * )
@@ -73,7 +73,6 @@ class SimplePayPalField extends FieldItemBase implements OptionsProviderInterfac
       '#default_value' => $this->getSetting('amount'),
       '#required' => TRUE,
       '#element_validate' => [
-        // @todo I'm not sure it's the right way.
         [static::class, 'validateFloat'],
       ],
     ];
@@ -142,10 +141,7 @@ class SimplePayPalField extends FieldItemBase implements OptionsProviderInterfac
   /**
    * {@inheritdoc}
    */
-  public function setPaymentInfo($info) {
-    // Simply set to 'paid'
-    // @todo check order status.
-    $this->setValue(0);
+  public function setPaymentInfo(array $info) {
   }
 
 }

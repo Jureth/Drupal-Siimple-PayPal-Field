@@ -83,7 +83,7 @@ function template_preprocess_paypal_smart_buttons_formatter(&$variables) {
       $definition->getTargetBundle(),
       $definition->getName(),
       $field->getEntity()->id(),
-      $variables['field_key']
+      $variables['field_key'],
     ]
   );
   $attributes = ['id' => $id];
@@ -106,4 +106,5 @@ function template_preprocess_paypal_smart_buttons_formatter_disabled(&$variables
  */
 function simple_paypal_field_field_widget_info_alter(array &$info) {
   $info['boolean_checkbox']['field_types'][] = 'simple_paypal_field';
+  $info['boolean_checkbox']['field_types'][] = 'auto_off_paypal_field';
 }

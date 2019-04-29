@@ -2,45 +2,63 @@
 
 namespace Drupal\simple_paypal_field\EventSubscriber;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\simple_paypal_field\Event\PaypalSmartButtonsEvent;
 use Drupal\simple_paypal_field\Event\PayPalSmartButtonsEvents;
 use Drupal\simple_paypal_field\PayPalFieldInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Event subscriber for PayPal fields.
+ */
 class SimplePayPalFieldEventSubscripber implements EventSubscriberInterface {
 
   /**
-   * Returns an array of event names this subscriber wants to listen to.
+   * Drupal Entity Type Manager.
    *
-   * The array keys are event names and the value can be:
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Drupal logger.
    *
-   *  * The method name to call (priority defaults to 0)
-   *  * An array composed of the method name to call and the priority
-   *  * An array of arrays composed of the method names to call and respective
-   *    priorities, or 0 if unset
-   *
-   * For instance:
-   *
-   *  * ['eventName' => 'methodName']
-   *  * ['eventName' => ['methodName', $priority]]
-   *  * ['eventName' => [['methodName1', $priority], ['methodName2']]]
-   *
-   * @return array The event names to listen to
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $log;
+
+  /**
+   * SimplePayPalFieldEventSubscripber constructor.
+   */
+  public function __construct(EntityTypeManagerInterface $manager, LoggerChannelInterface $log) {
+    $this->entityTypeManager = $manager;
+    $this->log = $log;
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
     $events[PayPalSmartButtonsEvents::APPROVE_ORDER] = ['updateField'];
     return $events;
   }
 
+  /**
+   * Update PayPal field value with data from PayPal.
+   *
+   * @param \Drupal\simple_paypal_field\Event\PaypalSmartButtonsEvent $event
+   *   Event object.
+   */
   public function updateField(PaypalSmartButtonsEvent $event) {
     $fieldInfo = $event->getField();
     try {
       if ($fieldInfo['entity_type'] && $fieldInfo['entity_id'] && $fieldInfo['bundle']) {
-        $entity = \Drupal::entityTypeManager()
+        $entity = $this->entityTypeManager
           ->getStorage($fieldInfo['entity_type'])
           ->load($fieldInfo['entity_id']);
-        if ($entity instanceOf FieldableEntityInterface) {
+        if ($entity instanceof FieldableEntityInterface) {
           if ($entity->hasField($fieldInfo['field'])) {
             $field = $entity->get($fieldInfo['field'])->get(
               $fieldInfo['field_id']
@@ -50,25 +68,26 @@ class SimplePayPalFieldEventSubscripber implements EventSubscriberInterface {
               $entity->save();
             }
             else {
-              \Drupal::logger('simple_paypal_field')->error(
+              $this->log->error(
                 'The field is not PayPal field'
               );
             }
           }
           else {
-            \Drupal::logger('simple_paypal_field')->error(
+            $this->log->error(
               'Entity has no field ' . $fieldInfo['field']
             );
           }
         }
         else {
-          \Drupal::logger('simple_paypal_field')->error(
+          $this->log->error(
             'Entity ' . $fieldInfo['entity_type'] . ' ' . $fieldInfo['entity_id'] . ' not found'
           );
         }
       }
-    }catch (\Throwable $e) {
-      \Drupal::logger('simple_paypal_field')->error('Exception ' . $e->getMessage());
+    }
+    catch (\Throwable $e) {
+      $this->log->error('Exception ' . $e->getMessage());
     }
   }
 

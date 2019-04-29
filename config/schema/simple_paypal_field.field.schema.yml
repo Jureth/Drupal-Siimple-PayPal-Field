@@ -42,4 +42,3 @@ field.widget.paypal_smart_buttons:
     tagline:
       type: boolean
       label: 'Show tagline'
-
