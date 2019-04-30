@@ -17,7 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "paypal_smart_buttons",
  *   label = @Translation("PayPal smart buttons"),
  *   field_types = {
- *     "simple_paypal_field"
+ *     "simple_paypal_field",
+ *     "auto_off_paypal_field"
  *   },
  *   multiple_values = FALSE
  * )

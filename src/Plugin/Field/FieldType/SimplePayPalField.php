@@ -79,7 +79,7 @@ class SimplePayPalField extends FieldItemBase implements OptionsProviderInterfac
     ];
     $element['on_label'] = [
       '#type' => 'hidden',
-      '#value' => $this->getSetting('on_label')
+      '#value' => $this->getSetting('on_label'),
     ];
 
     return $element;

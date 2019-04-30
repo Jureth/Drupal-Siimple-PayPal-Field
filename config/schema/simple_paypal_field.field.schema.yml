@@ -5,6 +5,9 @@ field.field_settings.simple_paypal_field:
     amount:
       type: float
       label: 'Amount'
+    on_label:
+      type: string
+      label: 'Label for checkboxes'
 field.value.simple_paypal_field:
   type: mapping
   mapping:
@@ -23,7 +26,7 @@ field.formatter.settings.paypal_smart_buttons:
         type: string
         label: 'Setting'
 
-field.widget.paypal_smart_buttons:
+field.widget.settings.paypal_smart_buttons:
   type: mapping
   label: 'Simple PayPal field widget settings'
   mapping:
