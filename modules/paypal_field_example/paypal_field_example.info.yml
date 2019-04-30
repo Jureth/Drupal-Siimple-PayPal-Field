@@ -6,4 +6,4 @@ core: 8.x
 dependencies:
   - simple_paypal_field:simple_paypal_field
   - drupal:node
-  - drupal:suser
+  - drupal:user

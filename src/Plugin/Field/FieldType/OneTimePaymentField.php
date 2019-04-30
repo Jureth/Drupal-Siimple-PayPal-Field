@@ -10,6 +10,7 @@ namespace Drupal\simple_paypal_field\Plugin\Field\FieldType;
  *   label = @Translation("One-time payment field"),
  *   description = @Translation("A field which disables itself after payment was made"),
  *   default_widget = "paypal_smart_buttons",
+ *   default_formatter = "paypal_smart_buttons",
  *   cardinality = 1
  * )
  */

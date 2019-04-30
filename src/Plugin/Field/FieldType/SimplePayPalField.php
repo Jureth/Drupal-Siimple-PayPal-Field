@@ -32,6 +32,7 @@ class SimplePayPalField extends FieldItemBase implements OptionsProviderInterfac
   public static function defaultFieldSettings() {
     $settings = [
       'amount' => '0.01',
+      'on_label' => new TranslatableMarkup('Enabled'),
     ];
     return $settings + parent::defaultFieldSettings();
   }
@@ -75,6 +76,10 @@ class SimplePayPalField extends FieldItemBase implements OptionsProviderInterfac
       '#element_validate' => [
         [static::class, 'validateFloat'],
       ],
+    ];
+    $element['on_label'] = [
+      '#type' => 'hidden',
+      '#value' => $this->getSetting('on_label')
     ];
 
     return $element;
