@@ -1,0 +1,6 @@
+services:
+  paypal_field_example.event_subscriber:
+    class: Drupal\paypal_field_example\EventSubscriber\PayPalFieldExampleSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }

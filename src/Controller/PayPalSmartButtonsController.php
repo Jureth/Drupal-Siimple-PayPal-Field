@@ -68,9 +68,9 @@ class PayPalSmartButtonsController extends ControllerBase {
       finally {
         unset($data['element']);
       }
-      $this->getLogger('simple_paypal_field')->debug(var_export($data, TRUE));
+      $this->getLogger('simple_paypal_field')->debug(var_export($data['details'], TRUE));
 
-      $event = new PaypalSmartButtonsEvent($data, $element);
+      $event = new PaypalSmartButtonsEvent($data['details'], $element);
       $this->eventDispatcher->dispatch(
         PayPalSmartButtonsEvents::APPROVE_ORDER,
         $event

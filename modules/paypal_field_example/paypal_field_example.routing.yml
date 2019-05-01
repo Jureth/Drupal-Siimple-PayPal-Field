@@ -1,0 +1,13 @@
+entity.payment.collection:
+  path: '/admin/content/payments'
+  defaults:
+    _entity_list: 'payment'
+    _title: 'Payments'
+  requirements:
+    _permission: 'simple_paypal_field.administer'
+entity.payment.canonical:
+  path: '/admin/content/payments/{payment}'
+  defaults:
+    _entity_view: 'payment.full'
+  requirements:
+    _permission: 'simple_paypal_field.administer'

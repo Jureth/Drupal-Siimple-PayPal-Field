@@ -1,6 +1,6 @@
 services:
   simple_paypal_field.simple_paypal_field_event_subscripber:
-    class: Drupal\simple_paypal_field\EventSubscriber\SimplePayPalFieldEventSubscripber
+    class: Drupal\simple_paypal_field\EventSubscriber\SimplePayPalFieldEventSubscriber
     tags:
       - { name: event_subscriber }
     arguments: ['@entity_type.manager', '@logger.channel.simple_paypal_field']
