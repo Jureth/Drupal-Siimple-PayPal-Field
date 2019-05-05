@@ -37,13 +37,21 @@ class SimplePayPalFieldTest extends BrowserTestBase {
   }
 
   /**
-   * Tests buttons widget and formatter are shown.
+   * Creates a field.
+   *
+   * @param string $field_type
+   *   Type of the field.
+   * @param string $widget_type
+   *   Widget name.
+   * @param string $formatter
+   *   Formatter name.
+   *
+   * @return string
+   *   Field name.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function testFieldShowsButtons() {
-    $field_type = 'simple_paypal_field';
-    $widget_type = 'paypal_smart_buttons';
-    $formatter = 'paypal_smart_buttons';
-
+  protected function createField(string $field_type, string $widget_type, string $formatter) {
     // Create a field.
     $field_name = 'field_' . mb_strtolower($this->randomMachineName());
     $field_storage = FieldStorageConfig::create(
@@ -81,7 +89,18 @@ class SimplePayPalFieldTest extends BrowserTestBase {
     entity_get_display('entity_test', 'entity_test', 'full')
       ->setComponent($field_name, ['type' => $formatter])
       ->save();
+    return $field_name;
+  }
 
+  /**
+   * Tests buttons widget and formatter are shown.
+   */
+  public function testFieldShowsButtons() {
+    $this->createField(
+      'simple_paypal_field',
+      'paypal_smart_buttons',
+      'paypal_smart_buttons'
+    );
     // Display creation form.
     $this->drupalGet('entity_test/add');
     $this->assertSession()->elementExists('css', '.paypal-button');
@@ -103,6 +122,35 @@ class SimplePayPalFieldTest extends BrowserTestBase {
     $content = $display->build($entity);
     $rendered_entity = $this->container->get('renderer')->renderRoot($content);
     $this->assertContains('paypal-button', (string) $rendered_entity);
+  }
+
+  /**
+   * Checks that the field can be disabled.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testFieldCanBeDisabled() {
+    $field_name = $this->createField(
+      'simple_paypal_field',
+      'boolean_checkbox',
+      'paypal_smart_buttons'
+    );
+
+    $field_item = "{$field_name}[value]";
+    $this->drupalGet('entity_test/add');
+    $this->assertSession()->checkboxChecked($field_item);
+    $this->drupalPostForm(NULL, [$field_item => 0], t('Save'));
+    preg_match('|entity_test/manage/(\d+)|', $this->getUrl(), $match);
+    $id = $match[1];
+    $this->assertSession()->pageTextContains(
+      t('entity_test @id has been created.', ['@id' => $id])
+    );
+    // Display the entity.
+    $entity = EntityTest::load($id);
+    $this->drupalGet($entity->url());
+    $this->assertSession()->elementNotExists('css', '.paypal-button');
   }
 
 }
